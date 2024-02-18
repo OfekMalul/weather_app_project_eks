@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<section style="background-color:powderblue;">
+    <div class="d-flex justify-content-center">
+        <h1>History Page!</h1>
+    </div>
+    <div class="d-flex justify-content-center">
+        <h4>You can download the search history <a href="data:application/json;charset=utf-8,{{ data|tojson|urlencode }}" download="search_history.json">here</a></h4>
+    </div>
+    {% for city_data in data %}
+    <div class="d-flex justify-content-around text-center mb-4 pb-3 pt-2">
+        <div class="card-body">
+            <h5 class="card-title">{{ city_data['city'] }}</h5>
+            <ul class="list-group list-group-flush">
+                {% for date in city_data['date'] %}
+                <li class="list-group-item">{{ date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+    </section>
+{% endblock%}

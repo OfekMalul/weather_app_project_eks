@@ -1,0 +1,31 @@
+# Ofek Malul
+# Date: 26/11/2023
+
+version: '3'
+
+services:
+  flask1:  
+    # path to dockerfile and the directory of docker-compose.yml
+    image: ofekmalul/weather_app_do14:1.0.0
+    container_name: flask1
+    restart: always
+    environment:
+      - APP_NAME=flask1
+
+  flask2:
+    # path to dockerfile and the directory of docker-compose.yml
+    image: ofekmalul/weather_app_do14:1.0.0
+    container_name: flask2
+    restart: always
+    environment:
+       - APP_NAME=flask2
+  nginx:
+     image: nginx:latest
+     restart: always
+     ports:
+       - "80:80"
+     volumes:
+       - ./scripts/nginx.conf:/etc/nginx/nginx.conf
+     depends_on:
+       - flask1
+       - flask2

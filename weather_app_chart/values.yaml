@@ -1,0 +1,48 @@
+replicaCount: 4
+
+image:
+  repository: ofekmalul/weather_app_advanced
+  pullPolicy: IfNotPresent
+  tag: "1.0.8"
+
+myLabel: 'web-app'
+
+imagePullSecrets:
+  - "web-app-key"
+nameOverride: ""
+fullnameOverride: ""
+
+configmap:
+  name: "blue-configmap"
+  color: "blue"
+
+configmapGreen:
+  name: "green-configmap"
+  color: "green"
+
+service:
+  name: web-app-service
+  type: ClusterIP
+  port: 80
+  targetPort: 9090
+
+ingress:
+  enabled: true
+  host: a38e955fecd724ed9994f3a929fb1ca9-2049781111.us-east-1.elb.amazonaws.com
+  path: /
+  pathType: Prefix # means that the path in the http request must start with /
+
+# persistennt data for pods
+persistent:
+  name: "efs-claim"
+  storageClassName: "efs-sc"
+  accessMode: "ReadWriteMany"
+  size: "100Ki"
+
+# volumeMount for containers
+volumeMounts:
+  name: "efsvolume"
+  mountPath: "/tmp"
+
+volume:
+  name: "efsvolume"

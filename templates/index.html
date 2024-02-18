@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<section style="background-color:powderblue;">
+<div class="d-flex justify-content-center">
+    <h1>This is the weather app!</h1>
+</div>
+<div class="d-flex justify-content-center">
+    <h5>To view your search history click <a href="/history">here</a></h5>
+</div>
+<form action="/weather" method="POST" class="d-flex justify-content-center">
+    <div class="form-group">
+        <label for="cityName" class="form-label">Insert city name</label>
+        <input class="form-control" type="text" id="cityName" name="cityName" placeholder="Enter city">
+        <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    </div>
+</form>
+</section>
+{% endblock%}
