@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  # push:
+  #   branches: [ "main" ]
+  #   tags: 
+  #     - 'v*.*.*'
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.64.0 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        WITH_V: true
+        PRERELEASE: true
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag app:$(date +%s)
