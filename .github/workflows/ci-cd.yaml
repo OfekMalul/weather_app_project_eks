@@ -31,7 +31,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Push to dockerhub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ steps.tag.outputs.new_tag }}
+        run: docker push ${{ secrets.DOCKER_USER }}/${{ env.REPO_NAME }}:${{ steps.tag.outputs.new_tag }}
 
 # jobs:
 #   deployment:
