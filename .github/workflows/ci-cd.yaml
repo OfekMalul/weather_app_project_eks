@@ -23,6 +23,7 @@ jobs:
           INITIAL_VERSION: 1.0.0
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag app:${{ steps.tag.outputs.new_tag }}
+        run: docker tag app:${{ steps.tag.outputs.new_tag }} ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
 
       - name: Log in to DockerHub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -38,7 +39,7 @@ jobs:
         #   push: true
         #   tags: ${{ steps.tag.outputs.new_tag }}
         #   labels: ofekmalul/web_app
-        run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+        run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }} 
 
 # jobs:
 #   deployment:
