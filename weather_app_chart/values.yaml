@@ -7,6 +7,12 @@ image:
 
 myLabel: 'web-app'
 
+service:
+  name: web-app-service
+  type: ClusterIP
+  port: 80
+  targetPort: 9090
+
 # imagePullSecrets:
 #   - "web-app-key"
 # nameOverride: ""
@@ -19,12 +25,6 @@ myLabel: 'web-app'
 # configmapGreen:
 #   name: "green-configmap"
 #   color: "green"
-
-service:
-  name: web-app-service
-  type: ClusterIP
-  port: 80
-  targetPort: 9090
 
 # ingress:
 #   enabled: true
