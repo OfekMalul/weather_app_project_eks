@@ -21,7 +21,7 @@ jobs:
           DEFAULT_BUMP: patch
           WITH_V: false
           INITIAL_VERSION: 1.0.0
-      - name: Build the Docker image
+      - name: Build the Docker image and tag
         run: |
           docker build . --file Dockerfile --tag app:${{ steps.tag.outputs.new_tag }}
           docker tag app:${{ steps.tag.outputs.new_tag }} ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
@@ -32,21 +32,5 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Build and Push to dockerhub
-        # uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        # with:
-        #   context: .
-        #   file: ./Dockerfile
-        #   push: true
-        #   tags: ${{ steps.tag.outputs.new_tag }}
-        #   labels: ofekmalul/web_app
+      - name: Push to dockerhub
         run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }} 
-
-# jobs:
-#   deployment:
-#     runs-on: ubuntu-latest
-#     steps: 
-#     - uses: actions/checkout@v3
-
-#     - name: Deploy
-# test1
