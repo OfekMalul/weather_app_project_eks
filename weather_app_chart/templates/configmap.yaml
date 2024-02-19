@@ -1,7 +1,0 @@
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: {{ .Values.configmap.name }}
-# data:
-#   # property-like keys; each key maps to a simple value
-#   BACKGROUND_COLOR: {{ .Values.configmap.color}}  
