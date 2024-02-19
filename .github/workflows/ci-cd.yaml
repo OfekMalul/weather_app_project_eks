@@ -54,6 +54,8 @@ jobs:
        - name: update Helm chart
         #  run: sed -i 's/tag: "1.0.0"/tag: "${{ steps.tag.outputs.new_tag }}"/g' weather_app_chart/values.yaml
          run: |
+            ls -l
+            pwd
             sed -i "s/tag: \"1.0.0\"/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
          
        - name: Deploy Helm chart
