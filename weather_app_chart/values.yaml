@@ -18,31 +18,8 @@ service:
 # nameOverride: ""
 # fullnameOverride: ""
 
-# configmap:
-#   name: "blue-configmap"
-#   color: "blue"
-
-# configmapGreen:
-#   name: "green-configmap"
-#   color: "green"
-
 # ingress:
 #   enabled: true
 #   host: a38e955fecd724ed9994f3a929fb1ca9-2049781111.us-east-1.elb.amazonaws.com
 #   path: /
 #   pathType: Prefix # means that the path in the http request must start with /
-
-# # persistennt data for pods
-# persistent:
-#   name: "efs-claim"
-#   storageClassName: "efs-sc"
-#   accessMode: "ReadWriteMany"
-#   size: "100Ki"
-
-# # volumeMount for containers
-# volumeMounts:
-#   name: "efsvolume"
-#   mountPath: "/tmp"
-
-# volume:
-#   name: "efsvolume"
