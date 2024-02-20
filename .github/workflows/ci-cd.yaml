@@ -52,7 +52,8 @@ jobs:
             git config --local user.email "ofekmalulmail@gmail.com"
             git config --local user.name "github actions"
             git status
-            git add .
+            git add weather_app_chart/values.yaml
+            git status
             git commit -m 'github action update the helm values.yaml file'
             git push
 
