@@ -38,6 +38,7 @@ jobs:
       # - name: update Helm chart
       #   run: |
       #       sed -i "s/tag: \"1.0.0\"/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
+      
       - name: get dir hirarchy
         run: ls -l
 
@@ -47,14 +48,14 @@ jobs:
           valueFile: 'weather_app_chart/values.yaml'
           value: ${{ steps.tag.outputs.new_tag }}
           branch: main
-          message: 'Update Image Version to ${{ steps.image.outputs.version }}' 
+          message: 'Update Image Version to ${{ steps.tag.outputs.new_tag }}' 
       
-      - name: update github repository
-        run: |
-            git status
-            git add .
-            git commit -m 'github action update the helm values.yaml file'
-            git push
+      # - name: update github repository
+      #   run: |
+      #       git status
+      #       git add .
+      #       git commit -m 'github action update the helm values.yaml file'
+      #       git push
 
   deploy:
      name: deploy helm chart to eks
