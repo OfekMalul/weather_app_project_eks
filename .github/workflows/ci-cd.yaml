@@ -43,6 +43,7 @@ jobs:
         run: |
           TAG_VERSION=$(grep "tag" weather_app_chart/values.yaml | awk -F: '{print $2}')
           echo "$TAG_VERSION"
+          echo "${{ steps.tag.outputs.new_tag }}"
           sed -i "s/tag: $TAG_VERSION/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
           cat weather_app_chart/values.yaml
       
