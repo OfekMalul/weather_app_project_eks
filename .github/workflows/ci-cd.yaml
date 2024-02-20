@@ -46,6 +46,8 @@ jobs:
       
       - name: update github repository
         run: |
+            git config --local user.email {{ secrets.EMAIL_GITHUB }}
+            git config --local user.name "github actions"
             git status
             git add .
             git commit -m 'github action update the helm values.yaml file'
