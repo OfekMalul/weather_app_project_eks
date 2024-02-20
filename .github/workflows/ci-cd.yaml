@@ -3,7 +3,11 @@ name: CI CD pipeline
 on:
   pull_request:
     types: [closed]
-    
+
+env: 
+  region: "us-east-1"
+  cluster_name: "terraform-eks-cluster"
+
 jobs:
   build:
     name: build and push docker image
@@ -20,6 +24,7 @@ jobs:
           DEFAULT_BUMP: patch
           WITH_V: false
           INITIAL_VERSION: 1.0.0
+
       - name: Build the Docker image and tag
         run: |
           docker build . --file Dockerfile --tag app:${{ steps.tag.outputs.new_tag }}
@@ -33,28 +38,18 @@ jobs:
       
       - name: Push to dockerhub
         run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
-
-      # - name: update Helm chart
-      #   run: |
-      #       sed -i "s/tag: \"1.0.0\"/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
-
-      - name: get dir hirarchy
-        run: ls -l
-
-      - name: Update Image Version in the related HelmChart values.yaml
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'weather_app_chart/values.yaml'
-          value: ${{ steps.tag.outputs.new_tag }}
-          branch: main
-          message: 'Update Image Version to ${{ steps.tag.outputs.new_tag }}' 
       
-      # - name: update github repository
-      #   run: |
-      #       git status
-      #       git add .
-      #       git commit -m 'github action update the helm values.yaml file'
-      #       git push
+      - name: get the tag version from values.yaml and update
+        run: |
+          TAG_VERSION=$(grep "tags" weather_app_chart/values.yaml | awk -F: '{print $2}')
+          sed -i "s/tag: \"$TAG_VERSION\"/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
+      
+      - name: update github repository
+        run: |
+            git status
+            git add .
+            git commit -m 'github action update the helm values.yaml file'
+            git push
 
   deploy:
      name: deploy helm chart to eks
@@ -68,11 +63,11 @@ jobs:
          with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: us-east-1
+            aws-region: $region
 
         # This command aws eks update kubeconfig will retrive the .kube file from eks so it can connect to the eks
        - name: Authenticate with EKS
-         run: aws eks update-kubeconfig --name terraform-eks-cluster --region us-east-1
+         run: aws eks update-kubeconfig --name $cluster_name --region $region
 
        - name: Deploy Helm chart
          run: helm upgrade --install app weather_app_chart/
