@@ -36,8 +36,8 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Push to dockerhub
-        run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+      # - name: Push to dockerhub
+      #   run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
       
       - name: get the tag version from values.yaml and update
         run: |
@@ -46,7 +46,7 @@ jobs:
       
       - name: update github repository
         run: |
-            git config --local user.email {{ secrets.EMAIL_GITHUB }}
+            git config --local user.email "ofekmalulmail@gmail.com"
             git config --local user.name "github actions"
             git status
             git add .
