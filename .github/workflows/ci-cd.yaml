@@ -8,6 +8,10 @@ env:
   REGION: "us-east-1"
   CLUSTER_NAME: "terraform-eks-cluster"
 
+# This is for oidc connection
+permissions:
+  id-token: write # This is required for requesting the JWT
+
 jobs:
   build:
     name: build and push docker image
@@ -66,8 +70,9 @@ jobs:
        - name: configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v4
          with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            role-to-assume: arn:aws:iam::504122215048:role/Github_oidc
             aws-region: ${{ env.REGION }}
 
         # This command aws eks update kubeconfig will retrive the .kube file from eks so it can connect to the eks
