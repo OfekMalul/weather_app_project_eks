@@ -53,7 +53,7 @@ jobs:
       
       - name: update github repository
         env:
-            USER_EMAIL: ${{ secrets.USERNAME_GITHUB }}
+            USER_EMAIL: ${{ secrets.EMAIL_GITHUB }}
             USER_NAME: ${{ secrets.USERNAME_GITHUB }}
         run: |
             git config --global user.email ${USER_EMAIL}
