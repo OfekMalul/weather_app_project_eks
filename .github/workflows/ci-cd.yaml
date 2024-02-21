@@ -11,7 +11,8 @@ env:
 # This is for oidc connection
 permissions:
   id-token: write # This is required for requesting the JWT
-
+  contents: read
+  
 jobs:
   # build:
   #   name: build and push docker image
