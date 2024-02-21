@@ -58,6 +58,7 @@ jobs:
         run: |
             git config --global user.email "ofekmalulmail@gmail.com"
             git config --global user.name "OfekMalul"
+            cat weather_app_chart/values.yaml
             git add weather_app_chart/values.yaml
             git status
             git commit -m 'github action update the helm values.yaml file'
