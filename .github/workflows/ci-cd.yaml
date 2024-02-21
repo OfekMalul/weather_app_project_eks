@@ -52,9 +52,12 @@ jobs:
           cat weather_app_chart/values.yaml
       
       - name: update github repository
+        env:
+            USER_EMAIL: ${{secrets.USERNAME_GITHUB}}
+            USER_NAME: ${{secrets.USERNAME_GITHUB}}
         run: |
-            git config --local user.email ofekmalulmail@gmail.com
-            git config --local user.name OfekMalul
+            git config --global user.email ${USER_EMAIL}
+            git config --global user.name ${USER_NAME}
             git add weather_app_chart/values.yaml
             git status
             git commit -m 'github action update the helm values.yaml file'
