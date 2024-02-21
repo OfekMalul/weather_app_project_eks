@@ -54,13 +54,10 @@ jobs:
       - name: update github repository
         run: |
             git config --local user.email ${{ secrets.EMAIL_GITHUB }}
-            git config --local user.name "github actions"
+            git config --local user.name ${{ secrets.USERNAME_GITHUB }}
             git add weather_app_chart/values.yaml
             git status
             git commit -m 'github action update the helm values.yaml file'
-            GIT_URL=$(git remote get-url origin)
-            GIT_URL_WITH_TOKEN="${GIT_URL/https:\/\/github.com\//https:\/\/${{ secrets.TOKEN_GITHUB }}@github.com/}"
-            git remote set-url origin $GIT_URL_WITH_TOKEN
             git push
 
   deploy:
