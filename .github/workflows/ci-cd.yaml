@@ -12,54 +12,55 @@ env:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read
-  
+
 jobs:
-  # build:
-  #   name: build and push docker image
-  #   runs-on: ubuntu-latest
+  build:
+    name: build and push docker image
+    runs-on: ubuntu-latest
+    needs: build
+    if: success()
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
       
-  #     - name: Bump version and push tag
-  #       id: tag
-  #       uses: anothrNick/github-tag-action@1.64.0 
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
-  #         DEFAULT_BUMP: patch
-  #         WITH_V: false
-  #         INITIAL_VERSION: 1.0.0
+      - name: Bump version and push tag
+        id: tag
+        uses: anothrNick/github-tag-action@1.64.0 
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+          DEFAULT_BUMP: patch
+          WITH_V: false
+          INITIAL_VERSION: 1.0.0
 
-  #     - name: Build the Docker image and tag
-  #       run: |
-  #         docker build . --file Dockerfile --tag app:${{ steps.tag.outputs.new_tag }}
-  #         docker tag app:${{ steps.tag.outputs.new_tag }} ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+      - name: Build the Docker image and tag
+        run: |
+          docker build . --file Dockerfile --tag ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
 
-  #     - name: Log in to DockerHub
-  #       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-  #       with:
-  #         username: ${{ secrets.DOCKER_USER }}
-  #         password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to DockerHub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
-  #     # - name: Push to dockerhub
-  #     #   run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+      - name: Push to dockerhub
+        run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
       
-  #     - name: get the tag version from values.yaml and update
-  #       run: |
-  #         TAG_VERSION=$(grep "tag" weather_app_chart/values.yaml | awk -F: '{print $2}')
-  #         echo "$TAG_VERSION"
-  #         echo "${{ steps.tag.outputs.new_tag }}"
-  #         sed -i "s/tag:$TAG_VERSION/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
-  #         cat weather_app_chart/values.yaml
+      - name: get the tag version from values.yaml and update
+        run: |
+          TAG_VERSION=$(grep "tag" weather_app_chart/values.yaml | awk -F: '{print $2}')
+          echo "$TAG_VERSION"
+          echo "${{ steps.tag.outputs.new_tag }}"
+          sed -i "s/tag:$TAG_VERSION/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
+          cat weather_app_chart/values.yaml
       
-  #     - name: update github repository
-  #       run: |
-  #           git config --local user.email ${{ secrets.EMAIL_GITHUB }}
-  #           git config --local user.name "github actions"
-  #           git add weather_app_chart/values.yaml
-  #           git status
-  #           git commit -m 'github action update the helm values.yaml file'
-  #           git push
+      - name: update github repository
+        run: |
+            git config --local user.email ${{ secrets.EMAIL_GITHUB }}
+            git config --local user.name "github actions"
+            git add weather_app_chart/values.yaml
+            git status
+            git commit -m 'github action update the helm values.yaml file'
+            git push
 
   deploy:
      name: deploy helm chart to eks
@@ -71,8 +72,6 @@ jobs:
        - name: configure AWS credentials
          uses: aws-actions/configure-aws-credentials@v4
          with:
-            # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
             aws-region: ${{ env.REGION }}
 
