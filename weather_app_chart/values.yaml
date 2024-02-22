@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: ofekmalul/web_app
   pullPolicy: IfNotPresent
-  tag: "1.0.21"
+  tag: "1.0.22"
 
 myLabel: 'web-app'
 
