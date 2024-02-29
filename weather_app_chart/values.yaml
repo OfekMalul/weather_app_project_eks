@@ -13,13 +13,14 @@ service:
   port: 80
   targetPort: 9090
 
-# imagePullSecrets:
-#   - "web-app-key"
-# nameOverride: ""
-# fullnameOverride: ""
-
-# ingress:
-#   enabled: true
-#   host: a38e955fecd724ed9994f3a929fb1ca9-2049781111.us-east-1.elb.amazonaws.com
-#   path: /
-#   pathType: Prefix # means that the path in the http request must start with /
+ingress:
+  enabled: true
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: public-alb-terraform-eks-cluster
+    alb.ingress.kubernetes.io/group.name: public-1
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  hostname: www.ofek.com
+  path: /
+  class: alb
+  pathType: Prefix # means that the path in the http request must start with /
