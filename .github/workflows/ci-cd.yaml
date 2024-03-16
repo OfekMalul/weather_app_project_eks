@@ -30,12 +30,12 @@ jobs:
       - name: Build the Docker image and tag
         run: docker build . --file Dockerfile --tag ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
 
-  #     - name: Run Snyk to check Docker image for vulnerabilities
-  #       uses: snyk/actions/docker@master
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #       with:
-  #         image: ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
 
   #     - name: Log in to DockerHub
   #       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
