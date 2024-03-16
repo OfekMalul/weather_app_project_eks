@@ -17,6 +17,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: snyk/actions/setup@master
       
       - name: Bump version and push tag
         id: tag
