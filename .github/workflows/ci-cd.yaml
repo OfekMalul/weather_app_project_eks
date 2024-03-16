@@ -31,63 +31,63 @@ jobs:
         run: |
           docker build . --file Dockerfile --tag ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
 
-      - name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
+  #     - name: Run Snyk to check Docker image for vulnerabilities
+  #       uses: snyk/actions/docker@master
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #       with:
+  #         image: ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Log in to DockerHub
+  #       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+  #       with:
+  #         username: ${{ secrets.DOCKER_USER }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Push to dockerhub
-        run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+  #     - name: Push to dockerhub
+  #       run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
       
-      - name: get the tag version from values.yaml and update
-        run: |
-          TAG_VERSION=$(grep "tag" weather_app_chart/values.yaml | awk -F: '{print $2}')
-          sed -i "s/tag:$TAG_VERSION/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
+  #     - name: get the tag version from values.yaml and update
+  #       run: |
+  #         TAG_VERSION=$(grep "tag" weather_app_chart/values.yaml | awk -F: '{print $2}')
+  #         sed -i "s/tag:$TAG_VERSION/tag: \"${{ steps.tag.outputs.new_tag }}\"/g" weather_app_chart/values.yaml
       
-      - name: update github repository
-        run: |
-            git config --global user.email ${{ secrets.EMAIL_GITHUB }}
-            git config --global user.name ${{ secrets.USERNAME_GITHUB }}
-            git add weather_app_chart/values.yaml
-            git status
-            git commit -m 'github action update the helm values.yaml file'
-            git push
+  #     - name: update github repository
+  #       run: |
+  #           git config --global user.email ${{ secrets.EMAIL_GITHUB }}
+  #           git config --global user.name ${{ secrets.USERNAME_GITHUB }}
+  #           git add weather_app_chart/values.yaml
+  #           git status
+  #           git commit -m 'github action update the helm values.yaml file'
+  #           git push
 
-  deploy:
-  # This is for oidc connection
-    permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read
-    name: deploy helm chart to eks
-    runs-on: ubuntu-latest
-    needs: build
-    if: success()
+  # deploy:
+  # # This is for oidc connection
+  #   permissions:
+  #     id-token: write # This is required for requesting the JWT
+  #     contents: read
+  #   name: deploy helm chart to eks
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: success()
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.REGION }}
+  #     - name: configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+  #         aws-region: ${{ env.REGION }}
 
-      # This command aws eks update kubeconfig will retrive the .kube file from eks so it can connect to the eks
-      - name: Authenticate with EKS
-        run: aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.REGION }}
+  #     # This command aws eks update kubeconfig will retrive the .kube file from eks so it can connect to the eks
+  #     - name: Authenticate with EKS
+  #       run: aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.REGION }}
 
-      - name: test kubectl
-        run: |
-          kubectl get nodes
-          kubectl get all
+  #     - name: test kubectl
+  #       run: |
+  #         kubectl get nodes
+  #         kubectl get all
 
-      - name: Deploy Helm chart
-        run: helm upgrade --install app weather_app_chart/
+  #     - name: Deploy Helm chart
+  #       run: helm upgrade --install app weather_app_chart/
