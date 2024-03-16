@@ -28,8 +28,7 @@ jobs:
           INITIAL_VERSION: 1.0.0
 
       - name: Build the Docker image and tag
-        run: |
-          docker build . --file Dockerfile --tag ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
+        run: docker build . --file Dockerfile --tag ofekmalul/web_app:{{ steps.tag.outputs.new_tag }}
 
   #     - name: Run Snyk to check Docker image for vulnerabilities
   #       uses: snyk/actions/docker@master
