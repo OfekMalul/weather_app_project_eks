@@ -71,7 +71,7 @@ jobs:
 
       - name: get the tag version from values.yaml and update
         run: |
-          cd CreatedByMe/web_app
+          cd CreatedByMe/weather_app_chart
           cat values.yaml
           TAG_VERSION=$(grep "tag" values.yaml | awk -F: '{print $2}')
           sed -i "s/tag:$TAG_VERSION/tag: \"1.0.1\"/g" values.yaml
