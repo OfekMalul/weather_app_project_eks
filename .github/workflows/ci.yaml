@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ secrets.USERNAME_GITHUB }}/helm_charts
-        token:  ${{ secrets.TOKEN_GITHUB }}
+          token:  ${{ secrets.TOKEN_GITHUB }}
       
       - name: Test what i have on the machine
         run: ls -l
