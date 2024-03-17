@@ -9,7 +9,7 @@ env:
   CLUSTER_NAME: "terraform-eks-cluster"
 
 jobs:
-  Deploy:
+  integrate:
     name: Create image tag and push to Dockerhub
     runs-on: ubuntu-latest
     permissions:
@@ -51,4 +51,38 @@ jobs:
             git status
             git commit -m 'github action update the helm values.yaml file'
             git push
-        
+
+  update-helm-chart:
+    permissions:
+      contents: write
+    name: Update helm chart
+    runs-on: ubuntu-latest
+    needs: integrate
+    if: success()
+
+    steps:
+      - name: Checkout helm repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.USERNAME_GITHUB }}/helm_charts
+      
+      - name: Test what i have on the machine
+        run: ls -l
+
+      - name: get the tag version from values.yaml and update
+        run: |
+          cd CreatedByMe/web_app
+          cat values.yaml
+          TAG_VERSION=$(grep "tag" values.yaml | awk -F: '{print $2}')
+          sed -i "s/tag:$TAG_VERSION/tag: \"1.0.1\"/g" values.yaml
+          cat values.yaml
+
+      - name: update github repository
+        run: |
+            git config --global user.email "ofekmalulmail@gmail.com"
+            git config --global user.name "OfekMalul"
+            echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" >> $GITHUB_ENV
+            git add .
+            git status
+            git commit -m 'github action update the helm values.yaml file'
+            git push
