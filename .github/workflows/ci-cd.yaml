@@ -10,7 +10,7 @@ env:
   CLUSTER_NAME: "terraform-eks-cluster"
 
 jobs:
-  Build & Test:
+  Build-Test:
     name: build & test
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.action == 'opened'
