@@ -4,10 +4,6 @@ on:
   pull_request:
     types: [closed]
 
-env: 
-  REGION: "us-east-1"
-  CLUSTER_NAME: "terraform-eks-cluster"
-
 jobs:
   integrate:
     name: Create image tag and push to Dockerhub
@@ -65,6 +61,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ secrets.USERNAME_GITHUB }}/helm_charts
+        token:  ${{ secrets.TOKEN_GITHUB }}
       
       - name: Test what i have on the machine
         run: ls -l
