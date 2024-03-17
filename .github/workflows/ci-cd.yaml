@@ -3,7 +3,7 @@ name: CI CD pipeline
 on:
   workflow_dispatch:
   pull_request:
-    types: [closed]
+    types: [opened]
 
 env: 
   REGION: "us-east-1"
@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: build test and push docker image
+    name: build & test
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,25 +23,17 @@ jobs:
         uses: snyk/actions/python-3.9@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      
-      - name: Bump version and push tag
-        id: tag
-        uses: anothrNick/github-tag-action@1.64.0 
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
-          DEFAULT_BUMP: patch
-          WITH_V: false
-          INITIAL_VERSION: 1.0.0
+        continue-on-error: true
 
       - name: Build the Docker image and tag
-        run: docker build . --file Dockerfile --tag ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+        run: docker build . --file Dockerfile --tag ofekmalul/web_app:1.0.0
 
       - name: Run Snyk to check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+          image: ofekmalul/web_app:1.0.0
         continue-on-error: true
 
   #     - name: Log in to DockerHub
@@ -97,3 +89,26 @@ jobs:
 
   #     - name: Deploy Helm chart
   #       run: helm upgrade --install app weather_app_chart/
+
+
+###########################################################################################################################################################
+
+  #  - name: Bump version and push tag
+  #       id: tag
+  #       uses: anothrNick/github-tag-action@1.64.0 
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }} 
+  #         DEFAULT_BUMP: patch
+  #         WITH_V: false
+  #         INITIAL_VERSION: 1.0.0
+
+  #     - name: Build the Docker image and tag
+  #       run: docker build . --file Dockerfile --tag ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+
+  #     - name: Run Snyk to check Docker image for vulnerabilities
+  #       uses: snyk/actions/docker@master
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #       with:
+  #         image: ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+  #       continue-on-error: true
