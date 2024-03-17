@@ -17,12 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: snyk/actions/setup@master
-
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
+      
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python-3.9@master
         env:

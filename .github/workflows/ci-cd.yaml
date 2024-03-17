@@ -1,62 +1,62 @@
-name: CI CD pipeline
+# name: CI CD pipeline
 
-on:
-  pull_request:
-    types: [opened, closed]
+# on:
+#   pull_request:
+#     types: [opened, closed]
 
-env: 
-  REGION: "us-east-1"
-  CLUSTER_NAME: "terraform-eks-cluster"
+# env: 
+#   REGION: "us-east-1"
+#   CLUSTER_NAME: "terraform-eks-cluster"
 
-jobs:
-  Build-Test:
-    name: build & test
-    runs-on: ubuntu-latest
-    if: github.event_name == "pull_request" && github.event.action == "opened"
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: snyk/actions/setup@master
+# jobs:
+#   Build-Test:
+#     name: build & test
+#     runs-on: ubuntu-latest
+#     if: github.event_name == "pull_request" && github.event.action == "opened"
+#     permissions:
+#       contents: write
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: snyk/actions/setup@master
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+#       - name: Dump GitHub context
+#         env:
+#           GITHUB_CONTEXT: ${{ toJson(github) }}
+#         run: echo "$GITHUB_CONTEXT"
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.9@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        continue-on-error: true
+#       - name: Run Snyk to check for vulnerabilities
+#         uses: snyk/actions/python-3.9@master
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#         continue-on-error: true
 
-      - name: Build the Docker image and tag
-        run: docker build . --file Dockerfile --tag ofekmalul/web_app:1.0.0
+#       - name: Build the Docker image and tag
+#         run: docker build . --file Dockerfile --tag ofekmalul/web_app:1.0.0
 
-      - name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ofekmalul/web_app:1.0.0
-        continue-on-error: true
+#       - name: Run Snyk to check Docker image for vulnerabilities
+#         uses: snyk/actions/docker@master
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#         with:
+#           image: ofekmalul/web_app:1.0.0
+#         continue-on-error: true
 
-  Deploy:
-    name: Create image tag and push to Dockerhub
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    # needs: Build & Test
-    # if: success()
-    steps:
-      - uses: actions/checkout@v4
+#   Deploy:
+#     name: Create image tag and push to Dockerhub
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     if: github.event_name == 'pull_request' && github.event.action == 'closed'
+#     # needs: Build & Test
+#     # if: success()
+#     steps:
+#       - uses: actions/checkout@v4
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+#       - name: Log in to DockerHub
+#         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+#         with:
+#           username: ${{ secrets.DOCKER_USER }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
       
   #     - name: Push to dockerhub
   #       run: docker push ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
