@@ -1,0 +1,41 @@
+name: Build and Test pipeline
+
+on:
+  pull_request:
+    types: [opened]
+
+env: 
+  REGION: "us-east-1"
+  CLUSTER_NAME: "terraform-eks-cluster"
+
+jobs:
+  Build-Test:
+    name: build & test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: snyk/actions/setup@master
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.9@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      - name: Build the Docker image and tag
+        run: docker build . --file Dockerfile --tag ofekmalul/web_app:1.0.0
+
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ofekmalul/web_app:1.0.0
+        continue-on-error: true

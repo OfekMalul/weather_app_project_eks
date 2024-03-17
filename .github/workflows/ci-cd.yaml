@@ -1,7 +1,6 @@
 name: CI CD pipeline
 
 on:
-  workflow_dispatch:
   pull_request:
     types: [opened, closed]
 
@@ -13,7 +12,7 @@ jobs:
   Build-Test:
     name: build & test
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    if: github.event_name == "pull_request" && github.event.action == "opened"
     permissions:
       contents: write
     steps:
