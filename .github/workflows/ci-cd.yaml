@@ -18,6 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: snyk/actions/setup@master
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.9@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       
       - name: Bump version and push tag
         id: tag
