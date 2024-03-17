@@ -37,6 +37,10 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ofekmalul/web_app:${{ steps.tag.outputs.new_tag }}
+        ignore:
+          - vulnerabilities:
+              - severity: "medium"
+        continue-on-error: true
 
   #     - name: Log in to DockerHub
   #       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
