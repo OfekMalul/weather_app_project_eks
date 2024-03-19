@@ -13,6 +13,4 @@ COPY . .
 
 EXPOSE 9090
 
-USER weather_user
-
 CMD python app.py
