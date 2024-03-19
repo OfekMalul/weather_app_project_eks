@@ -1,3 +1,0 @@
-########## github actions #############
-1. Add secrets such as dockerhub to enable push
-2. Create token for the actions pipeline to enable the change of the tag
