@@ -108,6 +108,3 @@ git push # If first push need to set up stream
 5. Giithub Repository -- pull request
  - new pull request --> Create Pull Request
  - Upon success --> Merge branch to main
-
-# Summary
-At this stage you have two pipelines configured for your project and ready to start testing and integrate your changes. 
