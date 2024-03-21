@@ -38,44 +38,44 @@ Triggered upon the successful merge of a pull request, this pipeline orchestrate
 This readme file is created with the understanding that the reader is familer with Github.
 
 1. Create Find-graind token that will enable the github runner to access and modify your current repository and your Helm repository
-    a. Click on your profile
-    b. Click settings
-    c. Click on Developer settings (find at bottom left of navbar)
-    d. Click on Personal access tokens --> Fine-graind tokens
-    e. Select repositories --> choose your helm repository + app repository
-    f. Enable follow repository permissions
+    - Click on your profile
+    - Click settings
+    - Click on Developer settings (find at bottom left of navbar)
+    - Click on Personal access tokens --> Fine-graind tokens
+    - Select repositories --> choose your helm repository + app repository
+    - Enable follow repository permissions
         i. Actions - read and write
         ii. Contents - read and write
         iii. Metadata - read
         iv. Workflows - read and write
-    g. Copy token
+    - Copy token
 
 2. Paste to Github Secrets
-    a. Go to your selected repository
-    b. Click on settings
-    c. Click on Secrets and Variables
-    d. Click on Actions at the drop down menu
-    e. Click on new repository secret
-    f. Secret name = TOKEN_GITHUB value = <fine-graind-token>
+    - Go to your selected repository
+    - Click on settings
+    - Click on Secrets and Variables
+    - Click on Actions at the drop down menu
+    - Click on new repository secret
+    - Secret name = TOKEN_GITHUB value = <fine-graind-token>
 
 3. Update your github repository settings to enable read and write
-    a. Go to your helm repository
-    b. Click settings
-    c. Click Actions
-    d. Click General
-    e. Workflow permissions --> Read and Write permissions
+    - Go to your helm repository
+    - Click settings
+    - Click Actions
+    - Click General
+    - Workflow permissions --> Read and Write permissions
 
 ### Snyk Integrate with Github Actions
 1. Create Snyk Account follow this link: 
 https://www.snyk.io
 
 2. Copy Snyk token to GitHub secrets
-    a. Click on your profile on the bottom left corner
-    b. Click on account settings
-    c. Copy Auth Token
+    - Click on your profile on the bottom left corner
+    - Click on account settings
+    - Copy Auth Token
 
 3. Paste to Github Secrets
-    a. Secret name = SNYK_TOKEN value = <Snyk_Token>
+    - Secret name = SNYK_TOKEN value = <Snyk_Token>
 
 ### Create DockerHub Account
 To create a DockerHub account follow this link: 
@@ -83,10 +83,11 @@ https://hub.docker.com/signup
 
 
 1. Create public DockerHub repository to store your docker images
+
 2. Update github actions ci.yaml to follow your personal DokckerHub repository.
-    a. Add your DockerHub username and passwrod to Github secrets
-        i. DOCKER_USER = <YOUR_USERNAME>
-        ii. DOCKER_PASSWORD = <YOUR_PASSWORD>
-    b. Update Helm repository to match your helm repository
-    c. Update the sed command to personally fit to the location of your values.yaml file
+    - Add your DockerHub username and passwrod to Github secrets
+        1. DOCKER_USER = <YOUR_USERNAME>
+        2. DOCKER_PASSWORD = <YOUR_PASSWORD>
+    - Update Helm repository to match your helm repository
+    - Update the sed command to personally fit to the location of your values.yaml file
  
