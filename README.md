@@ -1,7 +1,7 @@
 # Weather_app_project_eks
 
 ## Pipeline Architecture Overview
-![alt text](CI:CD-Pipeline.png)
+![CI-CD pipeline](CI:CD-Pipeline.png)
 
 ## Description
 This project implements a robust CI/CD pipeline for a simple Weather application. Leveraging the power of GitHub Actions and Snyk, the pipeline is divided into two stages, providing seamless integration and deployment processes. It is valuable to mention that this Github Repository takes part as one of three repositories that are being utilized for this project.
