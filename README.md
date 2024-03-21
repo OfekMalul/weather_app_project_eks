@@ -16,7 +16,7 @@ To view the repository please view this link: https://github.com/OfekMalul/helm_
 
 ## Pipelines Overview
 ### 1. Pull Request Pipeline:
-Triggered upon the creation of a pull request, this pipeline employs Snyk to conduct comprehensive testing of both the project source code and Docker image. This ensures that potential vulnerabilities are identified and addressed before merging changes into the main branch.
+Triggered upon the creation of a pull request, this pipeline employs Snyk to conduct comprehensive testing of both the project python source code and Docker image. This ensures that potential vulnerabilities are identified and addressed before merging changes into the main branch.
 
 ### 2. Merge Pipeline:
 Triggered upon the successful merge of a pull request, this pipeline orchestrates the deployment process. It pushes the Docker image to Docker Hub, ensuring its availability for deployment. Also, the pipeline updates the Helm repository with the new Docker image tag (https://github.com/OfekMalul/helm_charts/tree/main/CreatedByMe/weather_app_chart). This guarantees that the latest changes are seamlessly integrated into the deployment environment. The deployment of the helm chart is being taken care of by ArgoCD.
@@ -25,12 +25,13 @@ Triggered upon the successful merge of a pull request, this pipeline orchestrate
 1. Github Account
 2. Snyk Account
 3. DockerHub Account
-4. AWS Account
-5. Working EKS Cluster
-6. Deployed ArgoCD
-7. Helm Repository for Gitops
+4. Git installed on your local machine
+5. AWS Account
+6. Working EKS Cluster
+7. Deployed ArgoCD
+8. Helm Repository for Gitops
 
-*** Please note that points 4 - 7 are not directly related to this repository but are essential for the overall functioning of the three repositories project. ***
+*** Please note that points 4 - 8 are not directly related to this repository but are essential for the overall functioning of the three repositories project. ***
 
 ## Setup Instructions
 
@@ -90,3 +91,23 @@ https://hub.docker.com/signup
         2. DOCKER_PASSWORD = <YOUR_PASSWORD>
     - Update Helm repository to match your helm repository
     - Update the sed command to personally fit to the location of your values.yaml file
+
+# Usage
+1. Clone your repository to a selected location on your machine
+2. Create a feature branch in your local git repository.
+``` bash
+git checkount -b feature/my-feature-branch
+```
+3. Make changes
+4. Push new feature branch to github
+``` bash   
+git add .
+git commit -m 'some message'
+git push # If first push need to set up stream
+```
+5. Giithub Repository -- pull request
+ - new pull request --> Create Pull Request
+ - Upon success --> Merge branch to main
+
+# Summary
+At this stage you have two pipelines configured for your project and ready to start testing and integrate your changes. 
