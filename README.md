@@ -56,7 +56,7 @@ This readme file is created with the understanding that the reader is familer wi
     - Click on Secrets and Variables
     - Click on Actions at the drop down menu
     - Click on new repository secret
-    - Secret name = TOKEN_GITHUB value = <fine-graind-token>
+    - Secret name = TOKEN_GITHUB value = <fine_graind_token>
 
 3. Update your github repository settings to enable read and write
     - Go to your helm repository
@@ -90,4 +90,3 @@ https://hub.docker.com/signup
         2. DOCKER_PASSWORD = <YOUR_PASSWORD>
     - Update Helm repository to match your helm repository
     - Update the sed command to personally fit to the location of your values.yaml file
- 
