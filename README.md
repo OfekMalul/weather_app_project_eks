@@ -21,6 +21,29 @@ Triggered upon the creation of a pull request, this pipeline employs Snyk to con
 ### 2. Merge Pipeline:
 Triggered upon the successful merge of a pull request, this pipeline orchestrates the deployment process. It pushes the Docker image to Docker Hub, ensuring its availability for deployment. Also, the pipeline updates the Helm repository with the new Docker image tag (https://github.com/OfekMalul/helm_charts/tree/main/CreatedByMe/weather_app_chart). This guarantees that the latest changes are seamlessly integrated into the deployment environment. The deployment of the helm chart is being taken care of by ArgoCD.
 
+## Requirements
+1. Github Account
+2. Snyk Account
+3. DockerHub Account
+4. AWS Account
+5. Working EKS Cluster
+6. Deployed ArgoCD
+7. Helm Repository for Gitops
+
+*** We will not go over the points 4 - 7 as they are not connect to this repositoriy ***
+
 ## Setup Instructions
 
+### Create github account
+To create github account follow this link: 
+https://github.com/join
+
+
+### Create Snyk Account
+To create Snyk Account follow this link: 
+https://www.snyk.io
+
+### Create DockerHub Account
+To create a DockerHub account follow this link: 
+https://hub.docker.com/signup
 
