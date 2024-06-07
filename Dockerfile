@@ -1,7 +1,7 @@
 # Author: Ofek Malul
 # Date: 3/19/2024
 
-FROM python:3.9.6-slim-bullseye
+FROM python:3.13.0b1-slim-bullseye
 
 WORKDIR /app
 
